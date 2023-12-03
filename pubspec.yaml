@@ -39,6 +39,7 @@ dependencies:
   equatable: ^2.0.5
   mobx: ^2.2.1
   shared_preferences: ^2.2.2
+  flutter_mobx: ^2.2.0
 
 dev_dependencies:
   flutter_test:
