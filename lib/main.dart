@@ -1,13 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:mobx/mobx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:target_sistemas_teste/app/modules/home/ui/card_page.dart';
+import 'package:target_sistemas_teste/core/my_summary.dart';
 
+import 'app/modules/home/ui/home_page.dart';
 import 'app/modules/login/ui/login_page.dart';
+import 'core/dependency_injection_container.dart';
 
-void main() {
-  runApp(const AppWidget());
+Future<void> main() async {
+  final DependencyInjectionContainer dependencyInjectionContainer =
+      DependencyInjectionContainer();
+
+  runInAction(() {
+    dependencyInjectionContainer.cardTextStore.saveMySummaryText();
+  });
+
+  runApp(AppWidget(dependencyInjectionContainer: dependencyInjectionContainer));
 }
 
 class AppWidget extends StatelessWidget {
-  const AppWidget({super.key});
+  final DependencyInjectionContainer dependencyInjectionContainer;
+
+  const AppWidget({super.key, required this.dependencyInjectionContainer});
 
   // This widget is the root of your application.
   @override
@@ -21,22 +36,26 @@ class AppWidget extends StatelessWidget {
       ),
       routes: {
         '/': (context) => const LoginPage(),
-        // '/home': (context) => HomePage(),
+        '/home': (context) => HomePage(
+              store: dependencyInjectionContainer.homePageStore,
+            ),
+        '/card_page': (context) =>
+            CardPage(store: dependencyInjectionContainer.cardTextStore),
       },
       builder: (context, child) {
         return Scaffold(
           body: SafeArea(
             child: Center(
                 child: Container(
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0xFF1F4F62),
-                          Color(0xFF2C948E),
-                        ],
-                      )),
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF1F4F62),
+                  Color(0xFF2C948E),
+                ],
+              )),
               child: child!,
             )),
           ),

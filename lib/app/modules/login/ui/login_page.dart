@@ -1,10 +1,30 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:target_sistemas_teste/app/modules/login/value_objects/email_vo.dart';
 import 'package:target_sistemas_teste/app/modules/login/value_objects/password_vo..dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+GlobalKey<FormState> formKey = GlobalKey<FormState>();
+final userController = TextEditingController();
+final passwordController = TextEditingController();
+
+class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    //Isso é para facilitar meus testes
+    if (kDebugMode) {
+      userController.text = 'gabriehlr@gmail.com';
+      passwordController.text = '123456';
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +48,8 @@ class LoginPage extends StatelessWidget {
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-                SizedBox(height: 80,
+                SizedBox(
+                  height: 80,
                   child: TextFormField(
                     controller: userController,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -77,11 +98,13 @@ class LoginPage extends StatelessWidget {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
+                        borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent)),
+                      focusedBorder:  OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
                     ),
                   ),
                 ),
@@ -122,10 +145,6 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
-
-GlobalKey<FormState> formKey = GlobalKey<FormState>();
-final userController = TextEditingController();
-final passwordController = TextEditingController();
 
 void accessExternalLink(BuildContext context, String link) async {
   final url = Uri.parse(link);
